@@ -1,70 +1,105 @@
-# Getting Started with Create React App
+# React Routing
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## React Router 모듈 설치
+~~~ shell
+npm install react-router-dom
+~~~
 
-## Available Scripts
+## App component 수정
+src/App.js
+~~~ javascript
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import Home from './components/Home';
+import About from './components/About';
+import Contact from './components/Contact';
 
-In the project directory, you can run:
+const App = () => {
+  return (
+    <Router>
+      <div>
+        <nav>
+          <ul>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/about">About</Link>
+            </li>
+            <li>
+              <Link to="/contact">Contact</Link>
+            </li>
+          </ul>
+        </nav>
 
-### `npm start`
+        <Routes>
+          <Route path="/about">
+            <About />
+          </Route>
+          <Route path="/contact">
+            <Contact />
+          </Route>
+          <Route path="/">
+            <Home />
+          </Route>
+        </Routes>
+      </div>
+    </Router>
+  );
+};
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+export default App;
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
 
-### `npm test`
+~~~
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Screen Component 생성 
+src/components/Home.js
+src/components/About.js
+src/components/Contact.js
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Errors 
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+~~~ shell
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+One of your dependencies, babel-preset-react-app, is importing the
+"@babel/plugin-proposal-private-property-in-object" package without
+declaring it in its dependencies. This is currently working because
+"@babel/plugin-proposal-private-property-in-object" is already in your
+node_modules folder for unrelated reasons, but it may break at any time.
 
-### `npm run eject`
+babel-preset-react-app is part of the create-react-app project, which
+is not maintianed anymore. It is thus unlikely that this bug will
+ever be fixed. Add "@babel/plugin-proposal-private-property-in-object" to
+your devDependencies to work around this error. This will make this message
+go away.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+~~~
+Solution 
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+이 에러 메시지는 babel-preset-react-app 패키지가 "@babel/plugin-proposal-private-property-in-object" 패키지를 의존성으로 선언하지 않고 가져오고 있다는 내용입니다. 이로 인해 현재는 "@babel/plugin-proposal-private-property-in-object" 패키지가 이미 node_modules 폴더 내에 있는 상태이며, 불필요한 이유로 작동 중일 수 있습니다. 그러나 이러한 상태가 언제든지 깨질 수 있습니다.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+이 문제를 해결하기 위해 "@babel/plugin-proposal-private-property-in-object" 패키지를 devDependencies에 추가하면 됩니다. 이를 통해 위의 에러 메시지가 사라지게 됩니다.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+패키지 설치:
+먼저 해당 패키지를 devDependencies에 설치합니다.
 
-## Learn More
+bash
+~~~ bash
+npm install --save-dev @babel/plugin-proposal-private-property-in-object
+~~~
+확인:
+패키지가 제대로 설치되었는지 확인합니다. package.json 파일 내에 devDependencies 항목에 해당 패키지가 나타나야 합니다.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+json
+~~~ json
+"devDependencies": {
+  "@babel/plugin-proposal-private-property-in-object": "버전",
+  // 다른 devDependencies 항목들...
+}
+~~~
+애플리케이션 다시 시작:
+패키지를 추가한 후에는 React 애플리케이션을 다시 시작합니다.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+위의 단계를 따라 하면 에러 메시지가 사라지고 문제가 해결될 것입니다.
